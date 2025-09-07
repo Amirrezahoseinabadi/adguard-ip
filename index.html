@@ -88,9 +88,10 @@
     // !!! توجه: تنظیمات مهم - این بخش را با دقت ویرایش کنید !!!
     // -------------------------------------------------------------------
 
-    // 1. آدرس کامل ورکر کلودفلر خود را اینجا وارد کنید.
-    // مثال: "https://my-worker.my-account.workers.dev"
-    const WORKER_URL = "https://your-worker-url.workers.dev";
+    // 1. آدرس کامل ورکر کلودفلر خود را که ساخته‌اید، در خط زیر جایگزین کنید.
+    // این آدرس را می‌توانید از پنل کلودفلر خود کپی کنید.
+    // مثال: "https://adguard-api-proxy.yourname.workers.dev"
+    const WORKER_URL = "https://adguard-api-proxy.amiruserbot7.workers.dev/";
 
     // -------------------------------------------------------------------
     
@@ -126,7 +127,7 @@
             showToast('لطفاً نام کاربری خود را وارد کنید.', false);
             return;
         }
-        if (WORKER_URL === "https://your-worker-url.workers.dev") {
+        if (WORKER_URL.includes("!!!")) {
             showToast('خطای پیکربندی: لطفاً آدرس ورکر را در فایل HTML ویرایش کنید.', false);
             return;
         }
@@ -173,3 +174,4 @@
 
 </body>
 </html>
+
