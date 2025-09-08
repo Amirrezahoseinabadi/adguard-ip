@@ -3,111 +3,97 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>پنل ثبت IP برای DNS</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>راهنمای تنظیمات DNS</title>
+    <!-- استفاده از Tailwind CSS به همراه پلاگین Typography برای استایل‌دهی بهتر متن‌ها -->
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* استایل‌های سفارشی برای ظاهر بهتر */
         body {
             font-family: 'Vazirmatn', sans-serif;
-            background-color: #1a202c; /* bg-gray-900 */
-            color: #e2e8f0; /* text-gray-200 */
+            /* ایجاد یک پس‌زمینه گرادیان تیره و جذاب */
+            background: linear-gradient(145deg, #0f172a 0%, #020617 100%);
+            scroll-behavior: smooth;
         }
-        .form-input {
-            background-color: #2d3748; /* bg-gray-800 */
-            border-color: #4a5568; /* border-gray-600 */
-            color: #e2e8f0; /* text-gray-200 */
-            text-align: left;
-            direction: ltr;
+
+        /* استایل دکمه‌های آکاردئون */
+        .accordion-button {
+            transition: background-color 0.3s ease;
         }
-        .form-input::placeholder {
-            color: #718096; /* text-gray-400 */
-        }
-        .btn-primary {
-            background-color: #4299e1; /* bg-blue-500 */
-            transition: background-color 0.3s;
-        }
-        .btn-primary:hover {
-            background-color: #3182ce; /* bg-blue-600 */
-        }
-        .btn-primary:disabled {
-            background-color: #4a5568; /* bg-gray-600 */
-            cursor: not-allowed;
-        }
-        .toast {
-            visibility: hidden;
-            opacity: 0;
-            transition: opacity 0.5s, visibility 0.5s;
-        }
-        .toast.show {
-            visibility: visible;
-            opacity: 1;
-        }
-        /* Accordion styles */
+
+        /* انیمیشن باز و بسته شدن محتوای آکاردئون */
         .accordion-content {
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.4s ease-out;
+            transition: max-height 0.5s ease-in-out;
         }
+
+        /* انیمیشن چرخش آیکون فلش در آکاردئون */
         .accordion-button svg {
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
         }
+
         .accordion-button.open svg {
             transform: rotate(180deg);
         }
+
+        /* استایل اعلان کپی شدن */
+        .copy-notification {
+            visibility: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .copy-notification.show {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
     </style>
 </head>
-<body class="flex flex-col items-center justify-center min-h-screen p-4">
+<body class="bg-slate-900 text-slate-200 antialiased">
 
-    <!-- IP Updater Card -->
-    <div class="w-full max-w-md p-8 space-y-8 bg-gray-800 rounded-xl shadow-lg mb-8">
-        <div>
-            <h2 class="text-3xl font-bold text-center text-white">به‌روزرسانی IP</h2>
-            <p class="mt-2 text-center text-sm text-gray-400">
-                آدرس IP فعلی خود را برای سرویس DNS ثبت کنید.
-            </p>
-        </div>
+    <div class="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 lg:p-8">
+        <main class="w-full max-w-3xl mx-auto">
+            <!-- بخش هدر و عنوان اصلی صفحه -->
+            <header class="text-center mb-12">
+                <div class="inline-block p-4 bg-sky-500/10 border border-sky-500/20 rounded-xl mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-sky-400"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                </div>
+                <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight">راهنمای تنظیم DNS</h1>
+                <p class="mt-3 text-lg text-slate-400">راهنمای کامل برای استفاده از سرویس DNS اختصاصی</p>
+            </header>
 
-        <div class="space-y-6">
-            <div>
-                <label for="username" class="text-sm font-medium text-gray-300">نام کاربری شما</label>
-                <input id="username" name="username" type="text" required
-                       class="form-input block w-full px-3 py-2 mt-1 border rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                       placeholder="نام کاربری که دریافت کرده‌اید">
-            </div>
+            <!-- بخش نمایش و کپی آدرس IP سرور DNS -->
+            <section class="mb-12">
+                <label for="dns-ip" class="block text-sm font-medium text-slate-300 mb-2 text-center">آدرس سرور DNS شما (برای کپی کلیک کنید)</label>
+                <div class="relative group">
+                    <input id="dns-ip" type="text" readonly class="w-full bg-slate-800 border border-slate-700 text-green-400 text-center font-mono text-xl p-4 rounded-lg tracking-widest cursor-pointer focus:outline-none focus:ring-2 focus:ring-sky-500 transition-all" value="">
+                    <div class="absolute top-1/2 right-4 -translate-y-1/2 text-slate-400 group-hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    </div>
+                </div>
+            </section>
 
-            <div>
-                <button id="submitBtn" onclick="updateClientIp()"
-                        class="btn-primary w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                    <span id="btnText">بررسی و ثبت IP</span>
-                    <svg id="spinner" class="animate-spin -ml-1 mr-3 h-5 w-5 text-white hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                </button>
-            </div>
-        </div>
+            <!-- بخش اصلی راهنما به صورت آکاردئون -->
+            <section id="accordion-container" class="space-y-4">
+                <!-- آیتم‌های آکاردئون توسط جاوااسکریپت در اینجا ساخته می‌شوند -->
+            </section>
+        </main>
+
+        <!-- فوتر صفحه -->
+        <footer class="text-center mt-16 text-slate-500">
+            <p>&copy; 1403 - تمامی حقوق محفوظ است.</p>
+        </footer>
     </div>
 
-    <!-- Instructions Accordion Card -->
-    <div class="w-full max-w-2xl p-6 bg-gray-800 rounded-xl shadow-lg">
-        <h3 class="text-2xl font-bold text-center text-white mb-6">راهنمای تنظیم DNS</h3>
-        <p class="text-center text-gray-400 mb-4">آدرس DNS سرور شما:</p>
-        <div class="text-center bg-gray-900 text-green-400 font-mono py-2 px-4 rounded-md text-lg tracking-wider mb-8" id="dns-ip-display">
-            <!-- DNS IP will be inserted here by script -->
-        </div>
-
-        <div class="space-y-3" id="accordion-container">
-            <!-- Accordion items will be generated by script -->
-        </div>
-    </div>
-
-
-    <!-- Toast Notification -->
-    <div id="toast" class="toast fixed bottom-5 right-5 flex items-center w-full max-w-xs p-4 space-x-4 text-gray-500 bg-white divide-x divide-gray-200 rounded-lg shadow dark:text-gray-400 dark:divide-gray-700 space-x-reverse dark:bg-gray-800" role="alert">
-        <div id="toast-icon" class="text-2xl"></div>
-        <div id="toast-message" class="pr-4 text-sm font-normal"></div>
+    <!-- اعلان نمایش داده شده هنگام کپی موفقیت‌آمیز -->
+    <div id="copy-notification" class="copy-notification fixed bottom-5 right-5 flex items-center gap-3 w-full max-w-xs p-4 text-sm font-semibold text-sky-200 bg-slate-800/80 border border-slate-700 rounded-lg shadow-lg backdrop-blur-sm" role="alert">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>آدرس DNS در کلیپ‌بورد کپی شد!</span>
     </div>
 
 <script>
@@ -115,22 +101,20 @@
     // !!! توجه: تنظیمات مهم - این بخش را با دقت ویرایش کنید !!!
     // -------------------------------------------------------------------
 
-    // 1. آدرس کامل ورکر کلودفلر خود را که ساخته‌اید، در خط زیر جایگزین کنید.
-    const WORKER_URL = "https://adguard-api-proxy.amiruserbot7.workers.dev/";
-
-    // 2. آدرس IP سرور DNS خود را اینجا وارد کنید تا در راهنما نمایش داده شود.
+    // 1. آدرس IP سرور DNS خود را اینجا وارد کنید تا در راهنما نمایش داده شود.
     const DNS_SERVER_IP = "185.252.86.90";
 
     // -------------------------------------------------------------------
     
-    document.getElementById('dns-ip-display').textContent = DNS_SERVER_IP;
+    // قرار دادن آدرس DNS در کادر نمایش
+    document.getElementById('dns-ip').value = DNS_SERVER_IP;
 
     const instructions = [
         {
             title: 'ویندوز (Windows)',
             icon: '💻',
             content: `
-                <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                <ol>
                     <li>وارد <strong>Control Panel</strong> شوید.</li>
                     <li>به <strong>Network and Internet</strong> و سپس <strong>Network and Sharing Center</strong> بروید.</li>
                     <li>روی کانکشن فعال خود (مثلاً Ethernet یا Wi-Fi) کلیک کرده و <strong>Properties</strong> را انتخاب کنید.</li>
@@ -144,12 +128,12 @@
             title: 'اندروید (Android)',
             icon: '📱',
             content: `
-                <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                <ol>
                     <li>به <strong>Settings</strong> و سپس <strong>Network & internet</strong> (یا Wi-Fi & network) بروید.</li>
                     <li>گزینه <strong>Private DNS</strong> را پیدا کنید. (اگر پیدا نشد، آن را جستجو کنید).</li>
                     <li>گزینه <strong>Private DNS provider hostname</strong> را انتخاب کنید.</li>
                     <li>در کادر مربوطه، آدرس <strong>${DNS_SERVER_IP}</strong> را وارد کرده و <strong>Save</strong> کنید.</li>
-                    <li class="mt-4 text-sm text-gray-400"><strong>روش جایگزین (برای Wi-Fi):</strong> در تنظیمات Wi-Fi، روی شبکه متصل خود نگه داشته و <strong>Modify network</strong> را انتخاب کنید. سپس IP settings را به <strong>Static</strong> تغییر داده و در قسمت DNS 1 آدرس را وارد کنید.</li>
+                    <li class="mt-4 !text-slate-400"><strong>روش جایگزین (برای Wi-Fi):</strong> در تنظیمات Wi-Fi، روی شبکه متصل خود نگه داشته و <strong>Modify network</strong> را انتخاب کنید. سپس IP settings را به <strong>Static</strong> تغییر داده و در قسمت DNS 1 آدرس را وارد کنید.</li>
                 </ol>
             `
         },
@@ -157,7 +141,7 @@
             title: 'iOS (آیفون و آیپد)',
             icon: '🍎',
             content: `
-                <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                <ol>
                     <li>به <strong>Settings</strong> و سپس <strong>Wi-Fi</strong> بروید.</li>
                     <li>روی علامت <strong>(i)</strong> آبی رنگ کنار نام شبکه Wi-Fi خود ضربه بزنید.</li>
                     <li>به پایین اسکرول کرده و <strong>Configure DNS</strong> را انتخاب کنید.</li>
@@ -171,7 +155,7 @@
             title: 'macOS',
             icon: '🖥️',
             content: `
-                <ol class="list-decimal list-inside space-y-2 text-gray-300">
+                <ol>
                     <li>منوی Apple را باز کرده و به <strong>System Settings</strong> (یا System Preferences) بروید.</li>
                     <li>روی <strong>Network</strong> کلیک کنید.</li>
                     <li>کانکشن فعال خود (Wi-Fi یا Ethernet) را از لیست انتخاب کرده و روی دکمه <strong>Details...</strong> (یا Advanced...) کلیک کنید.</li>
@@ -186,8 +170,8 @@
             title: 'مودم و روتر',
             icon: '🌐',
             content: `
-                <p class="text-gray-300">تنظیم DNS روی مودم باعث می‌شود تمام دستگاه‌های متصل به آن به صورت خودکار از این سرویس استفاده کنند.</p>
-                <ol class="list-decimal list-inside space-y-2 text-gray-300 mt-4">
+                <p>تنظیم DNS روی مودم باعث می‌شود تمام دستگاه‌های متصل به آن به صورت خودکار از این سرویس استفاده کنند.</p>
+                <ol class="mt-4">
                     <li>مرورگر خود را باز کرده و با وارد کردن آدرس IP مودم (معمولاً <strong>192.168.1.1</strong>) وارد پنل تنظیمات آن شوید.</li>
                     <li>نام کاربری و رمز عبور مودم را وارد کنید (معمولاً admin/admin یا روی برچسب پشت مودم نوشته شده است).</li>
                     <li>به دنبال بخشی به نام <strong>DNS Settings</strong>، <strong>Network Settings</strong> یا <strong>DHCP Server</strong> بگردید.</li>
@@ -198,22 +182,25 @@
         },
     ];
 
+    // ساخت آیتم‌های آکاردئون به صورت پویا
     const accordionContainer = document.getElementById('accordion-container');
     instructions.forEach(item => {
         const itemHtml = `
-            <div class="border border-gray-700 rounded-lg">
+            <div class="bg-slate-800/50 border border-slate-700 rounded-lg backdrop-blur-sm transition-all duration-300 hover:border-sky-500/50">
                 <h2>
-                    <button type="button" class="accordion-button flex items-center justify-between w-full p-4 font-medium text-right text-gray-300 hover:bg-gray-700 focus:outline-none">
-                        <span class="flex items-center">
-                            <span class="text-xl mr-3">${item.icon}</span>
+                    <button type="button" class="accordion-button flex items-center justify-between w-full p-5 font-medium text-right text-slate-200 hover:bg-slate-800/60 rounded-lg focus:outline-none focus-visible:ring focus-visible:ring-sky-500">
+                        <span class="flex items-center text-lg">
+                            <span class="text-2xl ml-4">${item.icon}</span>
                             <span>${item.title}</span>
                         </span>
-                        <svg class="w-5 h-5 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                        <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
                     </button>
                 </h2>
                 <div class="accordion-content">
-                    <div class="p-5 border-t border-gray-700">
-                        ${item.content}
+                    <div class="p-5 pt-0">
+                        <div class="prose prose-invert prose-p:text-slate-300 prose-li:text-slate-300 prose-ol:list-decimal prose-strong:text-slate-100">
+                            ${item.content}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -221,9 +208,22 @@
         accordionContainer.innerHTML += itemHtml;
     });
 
+    // مدیریت رویداد کلیک برای باز و بسته کردن آکاردئون‌ها
     document.querySelectorAll('.accordion-button').forEach(button => {
         button.addEventListener('click', () => {
             const content = button.parentElement.nextElementSibling;
+            const isOpen = button.classList.contains('open');
+
+            // بستن تمام آکاردئون‌های باز دیگر
+            document.querySelectorAll('.accordion-button.open').forEach(openButton => {
+                if (openButton !== button) {
+                    openButton.classList.remove('open');
+                    const openContent = openButton.parentElement.nextElementSibling;
+                    openContent.style.maxHeight = null;
+                }
+            });
+
+            // باز یا بسته کردن آکاردئون فعلی
             button.classList.toggle('open');
             if (content.style.maxHeight) {
                 content.style.maxHeight = null;
@@ -233,83 +233,35 @@
         });
     });
 
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    const spinner = document.getElementById('spinner');
-
-    function showToast(message, isSuccess) {
-        const toast = document.getElementById('toast');
-        const toastMessage = document.getElementById('toast-message');
-        const toastIcon = document.getElementById('toast-icon');
-
-        toastMessage.textContent = message;
-        if (isSuccess) {
-            toast.classList.remove('bg-red-200', 'dark:bg-red-800');
-            toast.classList.add('bg-green-200', 'dark:bg-green-800');
-            toastIcon.textContent = '✅';
-        } else {
-            toast.classList.remove('bg-green-200', 'dark:bg-green-800');
-            toast.classList.add('bg-red-200', 'dark:bg-red-800');
-            toastIcon.textContent = '❌';
-        }
-        
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 5000);
-    }
-
-    async function updateClientIp() {
-        const username = document.getElementById('username').value.trim();
-        if (!username) {
-            showToast('لطفاً نام کاربری خود را وارد کنید.', false);
-            return;
-        }
-        if (WORKER_URL.includes("!!!")) {
-            showToast('خطای پیکربندی: لطفاً آدرس ورکر را در فایل HTML ویرایش کنید.', false);
-            return;
-        }
-
-        // --- UI Loading State ---
-        submitBtn.disabled = true;
-        btnText.textContent = 'در حال پردازش...';
-        spinner.classList.remove('hidden');
+    // تابع برای کپی کردن آدرس DNS
+    function copyDnsIp() {
+        const dnsInput = document.getElementById('dns-ip');
+        dnsInput.select();
+        // سازگار با دستگاه‌های موبایل
+        dnsInput.setSelectionRange(0, 99999);
 
         try {
-            const response = await fetch(WORKER_URL, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ username: username })
-            });
-
-            const result = await response.json();
-
-            if (response.ok) {
-                showToast(result.message, true);
-            } else {
-                throw new Error(result.error || 'یک خطای ناشناخته رخ داد.');
-            }
-
-        } catch (error) {
-            console.error('An error occurred:', error);
-            let errorMessage = 'یک خطای غیرمنتظره رخ داد.';
-             if (error.message.includes('Failed to fetch')) {
-                 errorMessage = 'خطای شبکه. آیا آدرس ورکر صحیح است و ورکر فعال است؟';
-            } else {
-                 errorMessage = error.message;
-            }
-            showToast(errorMessage, false);
-        } finally {
-            // --- UI Reset State ---
-            submitBtn.disabled = false;
-            btnText.textContent = 'بررسی و ثبت IP';
-            spinner.classList.add('hidden');
+            // استفاده از روش سازگارتر برای کپی در کلیپ‌بورد
+            document.execCommand('copy');
+            
+            // نمایش اعلان موفقیت
+            const notification = document.getElementById('copy-notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        } catch (err) {
+            console.error('خطا در کپی کردن متن: ', err);
         }
+        
+        // برداشتن انتخاب از روی متن پس از کپی
+        window.getSelection().removeAllRanges();
     }
+    
+    // افزودن رویداد کلیک به کادر نمایش IP برای فعال کردن تابع کپی
+    document.getElementById('dns-ip').addEventListener('click', copyDnsIp);
+
 </script>
 
 </body>
 </html>
-
